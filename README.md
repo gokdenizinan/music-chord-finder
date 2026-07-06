@@ -23,7 +23,11 @@ C major
 
 ## How to Run
 
+### For Mac
 python3 chord_finder.py
+
+### For Windows
+python chord_finder.py
 
 ## Roadmap
 
