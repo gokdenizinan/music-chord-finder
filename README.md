@@ -6,6 +6,8 @@ A small Python command-line tool that identifies basic chords from note names.
 
 - Major chords
 - Minor chords
+
+## Upcoming Features
 - Diminished chords
 - Augmented chords
 - Inversion support
@@ -21,7 +23,11 @@ C major
 
 ## How to Run
 
+### For Mac
 python3 chord_finder.py
+
+### For Windows
+python chord_finder.py
 
 ## Roadmap
 
