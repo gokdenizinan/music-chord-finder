@@ -58,7 +58,16 @@ def notes_to_numbers(notes): # Convert valid note names into chromatic numbers.
             values.append(NOTE_VALUES[note])
     return values
 
-def get_intervals(note_numbers, root_number):
+# Keep also inversion in mind: C E G and E G C are both C majors!
+
+# Example Output:
+""""
+get_intervals([0, 4, 7], 0) → [0, 4, 7]
+get_intervals([4, 7, 0], 0) → [0, 4, 7]
+get_intervals([4, 7, 0], 4) → [0, 3, 8]
+get_intervals([9, 0, 4], 9) → [0, 3, 7]
+"""
+def get_intervals(note_numbers, root_number): # Calculate the distances between each note and a possible root note
     pass
 
 
