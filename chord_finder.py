@@ -33,9 +33,9 @@ NOTE_VALUES = {
 
 CHORD_PATTERNS = {
      "major": [0, 4, 7],
-     "minor": [0, 3, 7]
-    # "diminished": ...
-    # "augmented": ...
+     "minor": [0, 3, 7],
+     "diminished": [0, 3, 6],
+     "augmented": [0, 4, 8]
 }
 
 
@@ -49,12 +49,14 @@ def normalize_note(note): # one note at a time
 def parse_user_input(user_input): #C E G#
     return user_input.split()
 
-
-
-
-def notes_to_numbers(notes):
-    pass
-
+def notes_to_numbers(notes): # Convert valid note names into chromatic numbers.
+    values = []
+    for note in notes:
+        if note not in NOTE_VALUES:
+            return "Invalid note!"
+        else:
+            values.append(NOTE_VALUES[note])
+    return values
 
 def get_intervals(note_numbers, root_number):
     pass
@@ -89,6 +91,9 @@ def main():
         sep_input[i] = normalize_note(note)
         i+=1
     print(sep_input)
+
+    print(notes_to_numbers(sep_input))
+
 
 
 if __name__ == "__main__":
