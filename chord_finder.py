@@ -13,6 +13,9 @@ Supported in v1:
 - Sharp notes only
 """
 
+"""
+- [] Work on invalid cases, all others pass
+"""
 
 NOTE_VALUES = {
     "C": 0,
@@ -32,10 +35,10 @@ NOTE_VALUES = {
 
 
 CHORD_PATTERNS = {
-     "major": [0, 4, 7],
-     "minor": [0, 3, 7],
-     "diminished": [0, 3, 6],
-     "augmented": [0, 4, 8]
+     "maj": [0, 4, 7],
+     "m": [0, 3, 7],
+     "dim": [0, 3, 6],
+     "aug": [0, 4, 8]
 }
 
 
@@ -87,17 +90,23 @@ def match_chord(intervals):
         if CHORD_PATTERNS[pattern] == intervals:
             return pattern
         index+=1
+    return None
 
 def find_possible_chords(notes):
-    pass
-
-
+    for root_number in notes:
+        intervals = get_intervals(notes, root_number)
+        if intervals != False:
+            for note in NOTE_VALUES.keys():
+                if NOTE_VALUES[note] == root_number:
+                    chord_tuple = [note , match_chord(intervals)]
+                    return chord_tuple          
+            
 def format_chord_name(root_note, chord_type):
-    pass
+    return root_note + chord_type
 
 
 def print_results(results):
-    pass
+    print("Possible chord found:", format_chord_name(results[0], results[1]))
 
 
 def main():
@@ -115,13 +124,11 @@ def main():
     print("Capitalised notes: "+str(sep_input))
 
     print("Note values: "+str(notes_to_numbers(sep_input)))
-    note_numbers = notes_to_numbers(sep_input)
-    for root_number in note_numbers:
-        intervals = get_intervals(note_numbers, root_number)
-        if intervals != False:
-            break
-    print("Ordered interval: "+str(intervals))
-    print("Chord pattern is: "+ str(match_chord(intervals)))
+    notes = notes_to_numbers(sep_input)
+ 
+    results = find_possible_chords(notes)
+    
+    print_results(results)
 
 if __name__ == "__main__":
     main()
