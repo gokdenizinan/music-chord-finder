@@ -82,8 +82,11 @@ def get_intervals(note_numbers, root_number): # Calculate the distances between 
         return False
 
 def match_chord(intervals):
-    pass
-
+    index = 0
+    for pattern in CHORD_PATTERNS.keys(): # When we iterate through a list they become string
+        if CHORD_PATTERNS[pattern] == intervals:
+            return pattern
+        index+=1
 
 def find_possible_chords(notes):
     pass
@@ -114,11 +117,11 @@ def main():
     print("Note values: "+str(notes_to_numbers(sep_input)))
     note_numbers = notes_to_numbers(sep_input)
     for root_number in note_numbers:
-        interval_result = get_intervals(note_numbers, root_number)
-        if interval_result != False:
+        intervals = get_intervals(note_numbers, root_number)
+        if intervals != False:
             break
-    print("Ordered interval: "+str(interval_result))
-
+    print("Ordered interval: "+str(intervals))
+    print("Chord pattern is: "+ str(match_chord(intervals)))
 
 if __name__ == "__main__":
     main()
