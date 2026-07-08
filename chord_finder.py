@@ -68,8 +68,18 @@ get_intervals([4, 7, 0], 4) → [0, 3, 8]
 get_intervals([9, 0, 4], 9) → [0, 3, 7]
 """
 def get_intervals(note_numbers, root_number): # Calculate the distances between each note and a possible root note
-    pass
+    interval = []
+    for note in note_numbers:
+        difference = note - root_number
+        if difference < 0:
+            difference+=12
+        interval.append(difference)
+    interval.sort()
 
+    if interval in CHORD_PATTERNS.values():
+        return interval
+    else:
+        return False
 
 def match_chord(intervals):
     pass
@@ -91,7 +101,7 @@ def main():
     print("Welcome to Chord Finder!")
     user_input = input("Enter notes: ")
 
-    print(parse_user_input(user_input))
+    print("Initial notes: "+str(parse_user_input(user_input)))
 
     sep_input = parse_user_input(user_input)
 
@@ -99,10 +109,15 @@ def main():
     for note in sep_input:
         sep_input[i] = normalize_note(note)
         i+=1
-    print(sep_input)
+    print("Capitalised notes: "+str(sep_input))
 
-    print(notes_to_numbers(sep_input))
-
+    print("Note values: "+str(notes_to_numbers(sep_input)))
+    note_numbers = notes_to_numbers(sep_input)
+    for root_number in note_numbers:
+        interval_result = get_intervals(note_numbers, root_number)
+        if interval_result != False:
+            break
+    print("Ordered interval: "+str(interval_result))
 
 
 if __name__ == "__main__":
