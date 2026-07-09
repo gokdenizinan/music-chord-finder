@@ -144,7 +144,7 @@ ___\|/_____|___|___________|_______________|_______________|_______________|__
             flag = False
             break
     if flag == True:    
-        print("Note values: "+str(notes_to_numbers(sep_input)))
+        #print("Note values: "+str(notes_to_numbers(sep_input)))
         notes = notes_to_numbers(sep_input)
 
         results = find_possible_chords(notes)
