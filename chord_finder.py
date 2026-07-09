@@ -1,22 +1,28 @@
 """
-Music Chord Finder - v1
+Music Chord Finder - v2
 
 Goal:
-Identify basic chords from note names.
+Identify basic chords from note names while providing a cleaner
+and more user-friendly command-line experience.
 
-Supported in v1:
+Core chord logic:
 - Major chords
 - Minor chords
 - Diminished chords
 - Augmented chords
 - Inversions
 - Sharp notes only
-"""
 
-"""
-- [] Work on invalid cases
-        - Wrong Note entry + 
-        - Wrong pattern +
+Improved in v2:
+- Cleaner welcome screen
+- Clearer input instructions
+- Example inputs shown to the user
+- Repeated input loop
+- Exit commands such as "q" or "quit"
+- Help command for valid input format
+- Better formatting for chord results
+- Better formatting for invalid notes
+- Better formatting for no-match cases
 """
 
 NOTE_VALUES = {
@@ -113,10 +119,8 @@ def print_results(results):
     else:
         print("No matching chord pattern found!")
 
-
-def main():
-    
-    ascii_art = r"""
+def print_welcome():
+        ascii_art = r"""
                      |\                         __3__          |         
 ____|\_______________|\\_______________|_______'__|__`___|_____|___|__________
 ____|/___3_|________@'_\|__|_____|_____|___|___|__|__|___|_|__@'___|___|___|__
@@ -125,31 +129,45 @@ __|_/_\__4_|___|_______@'__|____O'_________|____________O'_|__________@'___|__
 ___\|/_____|___|___________|_______________|_______________|_______________|__
     /         O'                                                  
 """
-    print(ascii_art)
+        print("\nMusic Chord Finder")
+        print(ascii_art)
+        print("\nEnter notes like: C E G\nType help for instructions.\nType q to quit.\n")
+        # If they type help they will be able to see some examples coming from print_examples
+
+def print_examples():
+    print("Examples: \nC E G\nE G C\nA C E\nC E G#\n")
+
+def main():
+    
+    print_welcome()
     user_input = input("Enter notes: ")
 
-    #print("Initial notes: "+str(parse_user_input(user_input)))
-
-    sep_input = parse_user_input(user_input)
-
-    i = 0
-    for note in sep_input:
-        sep_input[i] = normalize_note(note)
-        i+=1
-    #print("Capitalised notes: "+str(sep_input))
-    flag = True
-    for note in sep_input:
-        if note not in NOTE_VALUES.keys():
-            print("Invalid set of notes!")
-            flag = False
+    while True:
+        if user_input == "q":
+            print("Quitting...")
             break
-    if flag == True:    
-        #print("Note values: "+str(notes_to_numbers(sep_input)))
-        notes = notes_to_numbers(sep_input)
+        elif user_input.lower() == "help":
+            print_examples()
+            user_input = input("Enter notes: ")
+        else:
+            sep_input = parse_user_input(user_input)
 
-        results = find_possible_chords(notes)
-        
-        print_results(results)
+            i = 0
+            for note in sep_input:
+                sep_input[i] = normalize_note(note)
+                i+=1
+            flag = True
+            for note in sep_input:
+                if note not in NOTE_VALUES.keys():
+                    print("Invalid set of notes!")
+                    flag = False
+                    break
+            if flag == True:    
+                notes = notes_to_numbers(sep_input)
+
+                results = find_possible_chords(notes)
+                
+                print_results(results)
 
 if __name__ == "__main__":
     main()
