@@ -14,7 +14,9 @@ Supported in v1:
 """
 
 """
-- [] Work on invalid cases, all others pass
+- [] Work on invalid cases
+        - Wrong Note entry + 
+        - Wrong pattern +
 """
 
 NOTE_VALUES = {
@@ -35,10 +37,10 @@ NOTE_VALUES = {
 
 
 CHORD_PATTERNS = {
-     "maj": [0, 4, 7],
-     "m": [0, 3, 7],
-     "dim": [0, 3, 6],
-     "aug": [0, 4, 8]
+     "major": [0, 4, 7],
+     "minor": [0, 3, 7],
+     "diminished": [0, 3, 6],
+     "augmented": [0, 4, 8]
 }
 
 
@@ -106,14 +108,27 @@ def format_chord_name(root_note, chord_type):
 
 
 def print_results(results):
-    print("Possible chord found:", format_chord_name(results[0], results[1]))
+    if results != None:
+        print("Possible chord found:", format_chord_name(results[0], results[1]))
+    else:
+        print("No matching chord pattern found!")
 
 
 def main():
-    print("Welcome to Chord Finder!")
+    
+    ascii_art = r"""
+                     |\                         __3__          |         
+____|\_______________|\\_______________|_______'__|__`___|_____|___|__________
+____|/___3_|________@'_\|__|_____|_____|___|___|__|__|___|_|__@'___|___|___|__
+___/|____-_|____________|__|_____|____@'___|__@'_@'_@'___|_|______@'___|___|__
+__|_/_\__4_|___|_______@'__|____O'_________|____________O'_|__________@'___|__
+___\|/_____|___|___________|_______________|_______________|_______________|__
+    /         O'                                                  
+"""
+    print(ascii_art)
     user_input = input("Enter notes: ")
 
-    print("Initial notes: "+str(parse_user_input(user_input)))
+    #print("Initial notes: "+str(parse_user_input(user_input)))
 
     sep_input = parse_user_input(user_input)
 
@@ -121,14 +136,20 @@ def main():
     for note in sep_input:
         sep_input[i] = normalize_note(note)
         i+=1
-    print("Capitalised notes: "+str(sep_input))
+    #print("Capitalised notes: "+str(sep_input))
+    flag = True
+    for note in sep_input:
+        if note not in NOTE_VALUES.keys():
+            print("Invalid set of notes!")
+            flag = False
+            break
+    if flag == True:    
+        print("Note values: "+str(notes_to_numbers(sep_input)))
+        notes = notes_to_numbers(sep_input)
 
-    print("Note values: "+str(notes_to_numbers(sep_input)))
-    notes = notes_to_numbers(sep_input)
- 
-    results = find_possible_chords(notes)
-    
-    print_results(results)
+        results = find_possible_chords(notes)
+        
+        print_results(results)
 
 if __name__ == "__main__":
     main()
