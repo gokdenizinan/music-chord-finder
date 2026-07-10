@@ -14,11 +14,11 @@ Core chord logic:
 - Sharp notes only
 
 Improved in v2:
-- Cleaner welcome screen
-- Clearer input instructions
-- Example inputs shown to the user
-- Repeated input loop
-- Exit commands such as "q" or "quit"
+- Cleaner welcome screen +
+- Clearer input instructions +
+- Example inputs shown to the user +
+- Repeated input loop 
+- Exit commands such as "q" or "quit" +
 - Help command for valid input format
 - Better formatting for chord results
 - Better formatting for invalid notes
@@ -135,7 +135,7 @@ ___\|/_____|___|___________|_______________|_______________|_______________|__
         # If they type help they will be able to see some examples coming from print_examples
 
 def print_examples():
-    print("Examples: \nC E G\nE G C\nA C E\nC E G#\n")
+    print("\nExamples: \nC E G\nE G C\nA C E\nC E G#\n")
 
 def main():
     
@@ -168,6 +168,8 @@ def main():
                 results = find_possible_chords(notes)
                 
                 print_results(results)
+                user_input = input("\nEnter notes: ")
+                
 
 if __name__ == "__main__":
     main()
