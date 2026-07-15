@@ -100,24 +100,26 @@ def match_chord(intervals):
         index+=1
     return None
 
-def find_possible_chords(notes):
+def find_possible_chords(notes, track_root):
     for root_number in notes:
         intervals = get_intervals(notes, root_number)
         if intervals != False:
             for note in NOTE_VALUES.keys():
                 if NOTE_VALUES[note] == root_number:
                     chord_tuple = [note , match_chord(intervals)]
-                    return chord_tuple          
+                    return chord_tuple     
+                track_root.append(1)
             
 def format_chord_name(root_note, chord_type):
-    return root_note + chord_type
+    return root_note + ' '+chord_type
 
 
-def print_results(results):
+def print_results(results, sep_notes):
     if results != None:
-        print("Possible chord found:", format_chord_name(results[0], results[1]))
+        print("\nResult:", format_chord_name(results[0], results[1]))
+        print("\nNotes entered:", *sep_notes)
     else:
-        print("No matching chord pattern found!")
+        print("\nNo matching chord pattern found!")
 
 def print_welcome():
         ascii_art = r"""
@@ -135,20 +137,21 @@ ___\|/_____|___|___________|_______________|_______________|_______________|__
         # If they type help they will be able to see some examples coming from print_examples
 
 def print_examples():
-    print("\nExamples: \nC E G\nE G C\nA C E\nC E G#\n")
+    print("\nValid notes: \nC C# D D# E F F# G G# A A# B\n\nInput format:\nWrite notes separated by spaces.\n\nExamples:\nC E G\nE G C\nA C E\n\nSupported chords:\nMajor, minor, diminished, augmented\n\nType q to quit.\n")
 
 def main():
-    
+    track_root = [] # This is not an int because we are not returning this variable and still want to update. Thus, it is a list which is mutable 
     print_welcome()
-    user_input = input("Enter notes: ")
-
     while True:
-        if user_input == "q":
+        user_input = input("Enter notes: ").strip()
+        if user_input.lower() == "q" or user_input.lower() == "exit" or user_input.lower() == "quit":
             print("Quitting...")
             break
-        elif user_input.lower() == "help":
+        elif user_input.lower() == "help" or user_input.lower() == "h" or user_input == "?":
             print_examples()
-            user_input = input("Enter notes: ")
+        elif user_input == '':
+            print("\nNothing has been typed!\n")
+        
         else:
             sep_input = parse_user_input(user_input)
 
@@ -157,18 +160,23 @@ def main():
                 sep_input[i] = normalize_note(note)
                 i+=1
             flag = True
+            wrong_notes = []
             for note in sep_input:
                 if note not in NOTE_VALUES.keys():
-                    print("Invalid set of notes!")
+                    wrong_notes.append(note)
                     flag = False
-                    break
+            if flag == False:
+                for note in wrong_notes:
+                    print(note, "is a wrong note!")
+
             if flag == True:    
                 notes = notes_to_numbers(sep_input)
 
-                results = find_possible_chords(notes)
+                results = find_possible_chords(notes, track_root)
                 
-                print_results(results)
-                user_input = input("\nEnter notes: ")
+                print_results(results, sep_input)
+                if len(track_root) != 0:
+                    print("This is an inversion.")
                 
 
 if __name__ == "__main__":
